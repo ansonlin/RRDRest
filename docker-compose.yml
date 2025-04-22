@@ -7,8 +7,8 @@ rrdrest:
     image: ansonlin/monitoring:librenms-rrdrest
     container_name: rrdrest
     restart: always
-    #volumes:
-    #- "/opt/librenms:/opt/librenms"
+    volumes:
+    - "./librenms:/opt/librenms"
     environment:
     - TZ=Asia/Taipei
     ports:
