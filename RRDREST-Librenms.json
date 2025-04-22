@@ -1,0 +1,450 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_RRDREST_API",
+      "label": "RRDRest API",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "marcusolsson-json-datasource",
+      "pluginName": "JSON API"
+    },
+    {
+      "name": "DS_LIBRENMS_API",
+      "label": "LibreNMS API",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "marcusolsson-json-datasource",
+      "pluginName": "JSON API"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "marcusolsson-json-datasource",
+      "name": "JSON API",
+      "version": "1.2.1"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1626152089476,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_RRDREST_API}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "body": "",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.data[*].time",
+              "name": "time",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.data[*].inoctets",
+              "name": "inoctets",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.data[*].outoctets",
+              "name": "outoctets",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "?rrd_path=/opt/librenms/rrd/$device/port-id$portid.rrd&epoch_start_time=${__from:date:seconds}&epoch_end_time=${__to:date:seconds}"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Bandwidth In/Out",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "inMbps",
+            "binary": {
+              "left": "inoctets",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "8"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "inoctets"
+              ],
+              "reducer": "lastNotNull"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "outMbps",
+            "binary": {
+              "left": "outoctets",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "8"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "time",
+                "inMbps",
+                "outMbps"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1546",
+          "format": "bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1547",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_RRDREST_API}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "body": "",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.data[*].time",
+              "name": "time",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.data[*].inerrors",
+              "name": "inerrors",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.data[*].outerrors",
+              "name": "outerrors",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "?rrd_path=/opt/librenms/rrd/$device/port-id$portid.rrd&epoch_start_time=${__from:date:seconds}&epoch_end_time=${__to:date:seconds}"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Errors In/Out",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transformations": [],
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1546",
+          "format": "bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1547",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_LIBRENMS_API}",
+        "definition": "$.devices[*].hostname",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "device",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 300,
+          "fields": [
+            {
+              "jsonPath": "$.devices[*].hostname"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/devices"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_LIBRENMS_API}",
+        "definition": "$.ports[*].port_id",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interface",
+        "multi": false,
+        "name": "portid",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 300,
+          "experimentalVariableTextField": "ifName",
+          "experimentalVariableValueField": "id",
+          "fields": [
+            {
+              "jsonPath": "$.ports[*].port_id",
+              "name": "id"
+            },
+            {
+              "jsonPath": "$.ports[*].ifName",
+              "name": ""
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/devices/$device/ports?columns=ifName%2Cport_id"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "LibrenmsRRD",
+  "uid": "mFveL2mn1",
+  "version": 27
+}
