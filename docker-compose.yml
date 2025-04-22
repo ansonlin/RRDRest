@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+
+rrdrest:
+    #image: michaelwadman/rrdrest:latest
+    image: ansonlin/monitoring:librenms-rrdrest
+    container_name: rrdrest
+    restart: always
+    #volumes:
+    #- "/opt/librenms:/opt/librenms"
+    environment:
+    - TZ=Asia/Taipei
+    ports:
+    - "9000:9000"
